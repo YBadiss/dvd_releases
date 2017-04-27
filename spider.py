@@ -1,8 +1,11 @@
 import json
+import logging
 
 import scrapy
 
 from movie import Movie
+
+logger = logging.getLogger()
 
 
 class DvdMoviesSpider(scrapy.Spider):
@@ -23,17 +26,19 @@ class DvdMoviesSpider(scrapy.Spider):
                 self.previous_movies = set([Movie(**m) for m in json.load(f)])
         except IOError:
             self.previous_movies = set()
+        logger.info("Retrieving latest movies repo_path={}, previous_movies={}"
+                    .format(self.repo_path, self.previous_movies))
 
     def parse(self, response):
         movies = set([self.parse_movie(s) for s in response.css(".movie-inner")[:10]])
 
         new_movies = movies - self.previous_movies
         if new_movies:
-            print "New Movies: {}".format(new_movies)
+            logger.info("New Movies: {}".format(new_movies))
             with open(self.repo_path, "w+") as f:
                 json.dump([m.__dict__ for m in movies], f)
         else:
-            print "No New Movies"
+            logger.info("No New Movies")
 
     def parse_movie(self, selector):
         return Movie(
