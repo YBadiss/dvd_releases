@@ -1,9 +1,10 @@
-import json
 import logging
 
 import scrapy
 
 from movie import Movie
+import notifier
+from store import Store
 
 logger = logging.getLogger()
 
@@ -15,19 +16,11 @@ class DvdMoviesSpider(scrapy.Spider):
     ]
 
     def __init__(self, *args, **kwargs):
-        if "file" in kwargs:
-            self.repo_path = kwargs.pop("file")
-        else:
-            self.repo_path = "./latest_movies.json"
         super(DvdMoviesSpider, self).__init__(*args, **kwargs)
-
-        try:
-            with open(self.repo_path, "r") as f:
-                self.previous_movies = set([Movie(**m) for m in json.load(f)])
-        except IOError:
-            self.previous_movies = set()
-        logger.info("Retrieving latest movies repo_path={}, previous_movies={}"
-                    .format(self.repo_path, self.previous_movies))
+        self.store = Store()
+        self.previous_movies = set(self.store.get_movies())
+        logger.info("Retrieving latest movies previous_movies={}"
+                    .format(self.previous_movies))
 
     def parse(self, response):
         movies = set([self.parse_movie(s) for s in response.css(".movie-inner")[:10]])
@@ -35,8 +28,8 @@ class DvdMoviesSpider(scrapy.Spider):
         new_movies = movies - self.previous_movies
         if new_movies:
             logger.info("New Movies: {}".format(new_movies))
-            with open(self.repo_path, "w+") as f:
-                json.dump([m.__dict__ for m in movies], f)
+            notifier.new_movies(new_movies, self.store.get_users())
+            self.store.set_movies(movies)
         else:
             logger.info("No New Movies")
 

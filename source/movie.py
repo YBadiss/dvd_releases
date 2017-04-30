@@ -1,5 +1,5 @@
 class Movie(object):
-    def __init__(self, title, poster, more_info):
+    def __init__(self, title, poster, more_info, **_):
         self.title = title
         self.poster = poster
         self.more_info = more_info

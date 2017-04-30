@@ -1,0 +1,5 @@
+import os
+
+ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+PHONE_NUMBER = os.environ['TWILIO_PHONE_NUMBER']
