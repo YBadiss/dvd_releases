@@ -22,7 +22,7 @@ class DvdMoviesSpider(scrapy.Spider):
                     .format(self.previous_movies))
 
     def parse(self, response):
-        movies = [self.parse_movie(s) for s in response.css(".movie-inner")[:10]]
+        movies = [self.parse_movie(s) for s in response.css(".movie-inner")]
 
         new_movies = set(movies) - set(self.previous_movies)
         if new_movies:
