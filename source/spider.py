@@ -17,14 +17,14 @@ class DvdMoviesSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(DvdMoviesSpider, self).__init__(*args, **kwargs)
         self.store = Store()
-        self.previous_movies = set(self.store.get_new_releases())
+        self.previous_movies = self.store.get_new_releases()
         logger.info("Retrieving latest movies previous_movies={}"
                     .format(self.previous_movies))
 
     def parse(self, response):
-        movies = set([self.parse_movie(s) for s in response.css(".movie-inner")[:10]])
+        movies = [self.parse_movie(s) for s in response.css(".movie-inner")[:10]]
 
-        new_movies = movies - self.previous_movies
+        new_movies = set(movies) - set(self.previous_movies)
         if new_movies:
             logger.info("New Movies: {}".format(new_movies))
             self.store.set_new_releases(movies)

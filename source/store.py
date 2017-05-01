@@ -12,9 +12,19 @@ class Store(object):
 
     def get_new_releases(self):
         new_releases = self.db.new_releases
-        return [Movie(**e) for e in new_releases.find()]
+        return [
+            Movie(**e)
+            for e in sorted(new_releases.find(), key=lambda m: m.get("idx"))
+        ]
 
     def set_new_releases(self, movies):
+        def merge_dicts(x, y):
+            z = x.copy()
+            z.update(y)
+            return z
         new_releases = self.db.new_releases
         new_releases.delete_many({})
-        new_releases.insert_many([m.__dict__ for m in movies])
+        new_releases.insert_many([
+            merge_dicts({"idx": i}, m.__dict__)
+            for i, m in enumerate(movies)
+        ])
