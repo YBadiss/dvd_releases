@@ -3,7 +3,6 @@ import logging
 import scrapy
 
 from movie import Movie
-import notifier
 from store import Store
 
 logger = logging.getLogger()
@@ -28,7 +27,6 @@ class DvdMoviesSpider(scrapy.Spider):
         new_movies = movies - self.previous_movies
         if new_movies:
             logger.info("New Movies: {}".format(new_movies))
-            notifier.new_movies(new_movies, self.store.get_users())
             self.store.set_new_releases(movies)
         else:
             logger.info("No New Movies")
