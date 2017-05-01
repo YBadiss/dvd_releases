@@ -18,7 +18,7 @@ class DvdMoviesSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(DvdMoviesSpider, self).__init__(*args, **kwargs)
         self.store = Store()
-        self.previous_movies = set(self.store.get_movies())
+        self.previous_movies = set(self.store.get_new_releases())
         logger.info("Retrieving latest movies previous_movies={}"
                     .format(self.previous_movies))
 
@@ -29,7 +29,7 @@ class DvdMoviesSpider(scrapy.Spider):
         if new_movies:
             logger.info("New Movies: {}".format(new_movies))
             notifier.new_movies(new_movies, self.store.get_users())
-            self.store.set_movies(movies)
+            self.store.set_new_releases(movies)
         else:
             logger.info("No New Movies")
 

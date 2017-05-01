@@ -10,19 +10,11 @@ class Store(object):
         self.client = MongoClient()
         self.db = self.client[Store.DB_NAME]
 
-    def get_movies(self):
-        movies = self.db.movies
-        return [Movie(**e) for e in movies.find()]
+    def get_new_releases(self):
+        new_releases = self.db.new_releases
+        return [Movie(**e) for e in new_releases.find()]
 
-    def set_movies(self, new_movies):
-        movies = self.db.movies
-        movies.delete_many({})
-        movies.insert_many([m.__dict__ for m in new_movies])
-
-    def get_users(self):
-        users = self.db.users
-        return [u['number'] for u in users.find()]
-
-    def add_user(self, number):
-        users = self.db.users
-        users.insert_one({'number': number})
+    def set_new_releases(self, movies):
+        new_releases = self.db.new_releases
+        new_releases.delete_many({})
+        new_releases.insert_many([m.__dict__ for m in movies])
