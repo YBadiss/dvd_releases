@@ -17,5 +17,10 @@ def releases():
     return jsonify([m.__dict__ for m in movies])
 
 
+@app.route('/githook', methods=['POST'])
+def githook():
+    return 'ok'
+
+
 if __name__ == "__main__":
     app.run()
