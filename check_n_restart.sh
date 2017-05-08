@@ -2,15 +2,21 @@
 
 FILE="/home/ubuntu/.restart"
 
-cd /home/ubuntu/dvd_releases/
-
 if [ -f "$FILE" ]
 then
     echo "Pulling and restarting"
     rm -f $FILE
-    git pull
+
+    cd /home/ubuntu
+    rm -rf dvd_releases
+    git clone https://github.com/YBadiss/dvd_releases.git
+
+    cd dvd_releases
     sudo cp configs/supervisord.conf /etc/supervisord.conf
     crontab < configs/crontab
+
     supervisorctl reread
     supervisorctl restart all
+else
+    echo "File $FILE does not exist, nothing to be done"
 fi
