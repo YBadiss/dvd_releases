@@ -15,8 +15,8 @@ then
     sudo cp configs/supervisord.conf /etc/supervisord.conf
     crontab < configs/crontab
 
-    supervisorctl reread
-    supervisorctl restart all
+    /usr/local/bin/supervisorctl reread
+    /usr/local/bin/supervisorctl restart all
 else
     echo "File $FILE does not exist, nothing to be done"
 fi
