@@ -1,14 +1,13 @@
 from hashlib import sha1
 import hmac
-import os
 
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, request
 
 from store import Store
 
 app = Flask(__name__)
 store = Store()
-secret = os.environ['GITHUB_SECRET']
+secret = '6ZmzlO6w4YYLxEbXmQ3S'
 
 
 @app.route('/')
@@ -35,7 +34,7 @@ def githook():
     # HMAC requires the key to be bytes, but data is string
     mac = hmac.new(secret, msg=request.data, digestmod=sha1)
 
-    if not hmac.compare_digest(mac.hexdigest(), signature):
+    if not hmac.compare_digest(str(mac.hexdigest()), str(signature)):
         abort(403)
 
     open('/home/ubuntu/.restart', 'a').close()

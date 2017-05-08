@@ -1,6 +1,7 @@
 #!/bin/sh
 
 FILE="/home/ubuntu/.restart"
+source /home/ubuntu/.profile
 
 if [ -f "$FILE" ]
 then
