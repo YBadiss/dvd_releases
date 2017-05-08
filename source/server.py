@@ -19,6 +19,7 @@ def releases():
 
 @app.route('/githook', methods=['POST'])
 def githook():
+    open('/home/ubuntu/.restart', 'a').close()
     return 'ok'
 
 
