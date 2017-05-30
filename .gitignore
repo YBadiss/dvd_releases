@@ -93,3 +93,5 @@ ENV/
 
 # twilio
 .twilio_secrets
+
+dvd_releases/source/secret.py

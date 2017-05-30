@@ -19,7 +19,7 @@ def get_future_dvd_releases():
 
 
 def _parse_dvds(soup):
-    soup_items = soup.find_all("div", {"class": "movie-inner"})
+    soup_items = soup.find_all("li", {"class": "movie-wrapper"})
     return [_parse_dvd(item) for item in soup_items]
 
 
@@ -27,7 +27,8 @@ def _parse_dvd(soup):
     release_date = soup.find("span", {"class": "available-text"}).string
     release_date = parser.parse(release_date.replace("Available", "").strip())
 
-    return Movie(title=soup.find("a", {"class": "movie-title"}).string,
+    return Movie(id_=soup["rel"],
+                 title=soup.find("a", {"class": "movie-title"}).string,
                  poster=soup.find("img", {"class": "movie-poster"})["data-original"],
                  more_info=soup.find("a", {"class": "blue"})["href"],
                  release_date=release_date)

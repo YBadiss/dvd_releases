@@ -18,7 +18,8 @@ class ParserTestCase(unittest.TestCase):
     def test_get_new_dvd_releases(self, urllib_mock):
         # GIVEN
         urllib_mock.urlopen.return_value = html_file("html_pages/new_dvd_releases.htm")
-        movie = Movie(title="The Space Between Us",
+        movie = Movie(id_="20078145",
+                      title="The Space Between Us",
                       poster=("https://o.aolcdn.com/images/dims?resize=291%2C437&quality="
                               "70&image_uri=http%3A%2F%2Faolx.tmsimg.com%2Fmovieposters%2"
                               "Fv7%2FNowShowing%2F12560207%2Fp12560207_p_v7_ad.jpg%3Fw%3D"
@@ -40,7 +41,8 @@ class ParserTestCase(unittest.TestCase):
     def test_get_future_dvd_releases(self, urllib_mock):
         # GIVEN
         urllib_mock.urlopen.return_value = html_file("html_pages/future_dvd_releases.htm")
-        movie = Movie(title="I Am Heath Ledger",
+        movie = Movie(id_="swFO6RpOgvKONRXLmcYEL1",
+                      title="I Am Heath Ledger",
                       poster=("https://o.aolcdn.com/images/dims?resize=291%2C437&quality="
                               "70&image_uri=https%3A%2F%2Fs3.amazonaws.com%2Fmoviefone%2F"
                               "images%2Fposters%2Fheath-poster_1492556885.jpg&client=cbc7"
