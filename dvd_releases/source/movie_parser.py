@@ -32,7 +32,3 @@ def _parse_dvd(soup):
                  poster=soup.find("img", {"class": "movie-poster"})["data-original"],
                  more_info=soup.find("a", {"class": "blue"})["href"],
                  release_date=release_date)
-
-
-if __name__ == "__main__":
-    print get_new_dvd_releases()
