@@ -1,5 +1,6 @@
-*.json
 *logs
+.vscode/settings.json
+dvd_releases/source/dvdrelease*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

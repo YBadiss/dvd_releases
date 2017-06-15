@@ -1,0 +1,34 @@
+{
+  "production": {
+    "app_function": "server.app",
+    "lambda_description": "DVD Releases endpoint",
+    "aws_region": "eu-west-1",
+    "project_name": "DVDRelease",
+    "apigateway_enabled": true,
+    "apigateway_description": "DVD Releases endpoint",
+    "keep_warm": false,
+    "debug": false,
+    "log_level": "ERROR",
+    "environment_variables": {
+      "ENV_NAME": "prod"
+    },
+    "events": [{
+      "function": "server.notify_of_new_releases",
+      "expression": "cron(0 18 * * ? *)"
+    }]
+  },
+  "testing": {
+    "app_function": "server.app",
+    "lambda_description": "[TEST] DVD Releases endpoint",
+    "aws_region": "eu-west-1",
+    "project_name": "DVDReleaseTest",
+    "apigateway_enabled": true,
+    "apigateway_description": "[TEST] DVD Releases endpoint",
+    "keep_warm": false,
+    "debug": true,
+    "log_level": "ERROR",
+    "environment_variables": {
+      "ENV_NAME": "testing"
+    }
+  }
+}

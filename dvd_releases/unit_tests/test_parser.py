@@ -1,22 +1,18 @@
 from datetime import datetime
 import mock
-import os
 import unittest
 
 from dvd_releases.source.movie import Movie
 from dvd_releases.source.movie_parser import get_new_dvd_releases, get_future_dvd_releases
+from dvd_releases.unit_tests.helpers import html_file
 
 
-def html_file(path):
-    full_path = "{}/{}".format(os.path.dirname(__file__), path)
-    with open(full_path) as f:
-        return f.read()
-
-
+@mock.patch("dvd_releases.source.cache.Redis")
 @mock.patch("dvd_releases.source.movie_parser.urllib2")
 class ParserTestCase(unittest.TestCase):
-    def test_get_new_dvd_releases(self, urllib_mock):
+    def test_get_new_dvd_releases(self, urllib_mock, redis_mock):
         # GIVEN
+        redis_mock().get.return_value = None
         urllib_mock.urlopen.return_value = html_file("html_pages/new_dvd_releases.htm")
         movie = Movie(id_="20078145",
                       title="The Space Between Us",
@@ -38,8 +34,9 @@ class ParserTestCase(unittest.TestCase):
         for attr in actual_movie.__dict__:
             self.assertEqual(getattr(actual_movie, attr), getattr(movie, attr))
 
-    def test_get_future_dvd_releases(self, urllib_mock):
+    def test_get_future_dvd_releases(self, urllib_mock, redis_mock):
         # GIVEN
+        redis_mock().get.return_value = None
         urllib_mock.urlopen.return_value = html_file("html_pages/future_dvd_releases.htm")
         movie = Movie(id_="swFO6RpOgvKONRXLmcYEL1",
                       title="I Am Heath Ledger",

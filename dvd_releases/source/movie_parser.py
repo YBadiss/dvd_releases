@@ -1,18 +1,31 @@
 from dateutil import parser
+import json
 import logging
-import urllib2
 
+import urllib2
 from bs4 import BeautifulSoup
+
+from cache import cache_it
 from movie import Movie
 
 logger = logging.getLogger()
 
 
+def serialize_movies(movies):
+    return json.dumps([m.as_dict() for m in movies])
+
+
+def deserialize_movies(movies_str):
+    return [Movie.from_dict(dict_) for dict_ in json.loads(movies_str)]
+
+
+@cache_it('dvd.new', serialize=serialize_movies, deserialize=deserialize_movies)
 def get_new_dvd_releases():
     page = urllib2.urlopen("https://www.moviefone.com/dvd/")
     return _parse_dvds(BeautifulSoup(page, "html.parser"))
 
 
+@cache_it('dvd.future', serialize=serialize_movies, deserialize=deserialize_movies)
 def get_future_dvd_releases():
     page = urllib2.urlopen("https://www.moviefone.com/dvd/coming-soon/")
     return _parse_dvds(BeautifulSoup(page, "html.parser"))

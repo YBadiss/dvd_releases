@@ -6,7 +6,7 @@ HEADERS = {'Content-Type': 'application/json; charset=utf-8'}
 
 
 def make_url(path):
-    return ("https://xt6la9orzh.execute-api.eu-west-1.amazonaws.com/production/"
+    return ("https://y6y1bzmgo9.execute-api.eu-west-1.amazonaws.com/testing/"
             "dvd-releases/{}".format(path))
 
 

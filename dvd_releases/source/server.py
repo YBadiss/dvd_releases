@@ -10,6 +10,7 @@ from subscription import (get_subscriptions,
                           unsubscribe_from_movie)
 
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 app = Flask(__name__)
 
 
